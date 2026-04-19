@@ -54,4 +54,3 @@ Students building portfolio projects
 
 Prototyping mobile app interfaces
 
-Teaching DOM manipulation and event handling
