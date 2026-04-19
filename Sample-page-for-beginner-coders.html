@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Smart Tab Toolbar</title>
+  <style>
+    /* Global colors and app background */
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f2f2f7; /* Change the background color of the entire app */
+      color: #222; /* Change the text color */
+    }
+
+    .content {
+      padding: 20px;
+      padding-bottom: 100px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Bottom toolbar */
+    .toolbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 8px;
+      background: rgba(255, 255, 255, 0.95); /* Change the toolbar color here */
+      box-shadow: 0 -10px 24px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(12px);
+      gap: 4px;
+      border-top: 0.5px solid rgba(0, 0, 0, 0.05);
+      z-index: 100;
+    }
+
+    .toolbar button {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      color: #555; /* Button text color */
+      font-size: 12px;
+      line-height: 1.2;
+      text-align: center;
+      cursor: pointer;
+      padding: 10px 4px;
+      border-radius: 18px;
+      transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .toolbar button:hover {
+      background: rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px);
+    }
+
+    .toolbar button.active {
+      color: #1d4ed8; /* Active button color */
+      font-weight: 600;
+      background: rgba(29, 78, 216, 0.12); /* Active button background */
+    }
+
+    .toolbar .icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    /* Cards and images in page content */
+    .page-card {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.1s ease;
+    }
+
+    .page-card img {
+      width: 100%;
+      border-radius: 20px;
+      display: block;
+      margin-bottom: 16px;
+      object-fit: cover;
+      max-height: 200px;
+      background: #f0f0f3;
+    }
+
+    .page-card-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .page-card-text {
+      margin: 0;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .page-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0 0 6px 0;
+    }
+
+    .page-text {
+      font-size: 16px;
+      color: #3a3a44;
+      margin-top: 6px;
+    }
+
+    .highlight-badge {
+      background: #eef2ff;
+      padding: 6px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      display: inline-block;
+      margin-top: 12px;
+      color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="content" id="page-content">
+    <!-- dynamic content will be injected here -->
+  </div>
+
+  <div class="toolbar">
+    <button class="active" data-page="home" onclick="setActive(this)">
+      <span class="icon">🏠</span>
+      Home
+    </button>
+    <button data-page="add" onclick="setActive(this)">
+      <span class="icon">➕</span>
+      Add
+    </button>
+    <button data-page="market" onclick="setActive(this)">
+      <span class="icon">🛒</span>
+      Market
+    </button>
+    <button data-page="settings" onclick="setActive(this)">
+      <span class="icon">⚙️</span>
+      Settings
+    </button>
+  </div>
+
+  <script>
+    // Function to change the active button on the toolbar and load new page content.
+    function setActive(button) {
+      document.querySelectorAll('.toolbar button').forEach(el => el.classList.remove('active'));
+      button.classList.add('active');
+      showPage(button.dataset.page);
+    }
+
+    // Main function to render each tab content — fully customizable.
+    // You can easily change text, images, descriptions, and layouts.
+    function showPage(page) {
+      const pageContent = document.getElementById('page-content');
+      if (!pageContent) return;
+
+      // ----- HOME PAGE (Welcome) -----
+      if (page === 'home') {
+        pageContent.innerHTML = `
+          <h1>🏠 Home</h1>
+          <p class="page-text">Welcome to your smart dashboard. Explore tools, updates, and inspiration.</p>
+          <div class="page-card">
+            <img src="link to image" alt="Home inspiration">
+            <h2 class="page-card-title">Your space, simplified</h2>
+            <p class="page-card-text">Discover a clean interface designed for your daily routine. Stay organized, track your goals, and enjoy a seamless experience across all tabs.</p>
+            <div class="highlight-badge">✨ New features available</div>
+          </div>
+          <div class="page-card">
+            <h3 class="page-card-title" style="font-size: 18px; margin-bottom: 6px;">📌 Quick tip</h3>
+            <p class="page-card-text">Tap any tab below to navigate. The active button stays highlighted so you always know where you are.</p>
+          </div>
+        `;
+      } 
+      // ----- ADD PAGE (Create / Upload) -----
+      else if (page === 'add') {
+        pageContent.innerHTML = `
+          <h1>➕ Add new</h1>
+          <p class="page-text">Create, upload, or share something fresh. Add your ideas right here.</p>
+          <div class="page-card">
+            <img src="link to image" alt="Upload illustration">
+            <h2 class="page-card-title">Upload content</h2>
+            <p class="page-card-text">You can add images, documents, or notes. Customize this area with your own image URL and description. Perfect for media sharing or personal collections.</p>
+            <div style="margin-top: 16px; background: #f8f9ff; border-radius: 20px; padding: 12px;">
+              <span style="font-weight: 500;">📎 Supported formats:</span> PNG, JPG, PDF, MP4
+            </div>
+          </div>
+          <div class="page-card">
+            <h3 class="page-card-title" style="font-size: 18px;">✏️ Quick note</h3>
+            <p class="page-card-text">Replace the placeholder image link with your own. Just edit the "src" attribute inside this card.</p>
+          </div>
+        `;
+      } 
+      // ----- MARKET PAGE (Shop / Marketplace) -----
+      else if (page === 'market') {
+        pageContent.innerHTML = `
+          <h1>🛒 Market</h1>
+          <p class="page-text">Discover hand-picked items, exclusive deals, and trending products.</p>
+          <div class="page-card">
+            <img src="link to image" alt="Marketplace promo">
+            <h2 class="page-card-title">Limited time offers</h2>
+            <p class="page-card-text">Get up to 40% off on selected collections. From digital assets to lifestyle goods — explore the market hub and find inspiration for your next purchase.</p>
+            <div class="highlight-badge">🔥 Hot this week</div>
+          </div>
+          <div class="page-card">
+            <h3 class="page-card-title" style="font-size: 18px;">⭐ Leaderboard</h3>
+            <p class="page-card-text">Top creators and community picks appear here. Check back daily for fresh updates and rewards.</p>
+          </div>
+        `;
+      } 
+      // ----- SETTINGS PAGE (Preferences) -----
+      else if (page === 'settings') {
+        pageContent.innerHTML = `
+          <h1>⚙️ Settings</h1>
+          <p class="page-text">Personalize your experience, manage preferences, and configure the app.</p>
+          <div class="page-card">
+            <img src="link to image" alt="Settings dashboard">
+            <h2 class="page-card-title">Customize toolbar</h2>
+            <p class="page-card-text">You can adjust colors, background, or accent style directly in the CSS section. Change text labels, icons or add more tabs easily.</p>
+            <div style="margin-top: 12px;">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <input type="checkbox" id="demoNotify" style="width: 18px; height: 18px;"> 
+                <span>Enable notifications (demo)</span>
+              </label>
+            </div>
+            <div class="page-note" style="margin-top: 14px;">💡 Tip: Replace placeholder images with your own URLs for a professional look.</div>
+          </div>
+          <div class="page-card">
+            <h3 class="page-card-title" style="font-size: 18px;">🌐 Language & region</h3>
+            <p class="page-card-text">English (US) · Timezone: UTC+0 · Flexible layout ready for any content.</p>
+          </div>
+        `;
+      } 
+      else {
+        // fallback (should never happen)
+        pageContent.innerHTML = `<h1>Home</h1><p>Welcome back.</p>`;
+      }
+    }
+
+    // Initialize: load home page by default, ensure active button matches 'home'
+    // The 'home' button already has class "active" in HTML, but we call showPage anyway.
+    showPage('home');
+
+    // Optional: add a small console message to confirm everything is working.
+    console.log('✅ Toolbar is ready — all pages in English with images and cards.');
+  </script>
+</body>
+</html>
